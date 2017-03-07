@@ -21,7 +21,7 @@ public final class InventoryContract {
                                     + CONTENT_AUTHORITY + "/" + PATH_INVENTORY;
         public static final String CONTENT_ITEM_BASE_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/"
                 + CONTENT_AUTHORITY + "/" + PATH_INVENTORY;
-        public static final String TABLE_NAME = "stock";
+        public static final String TABLE_NAME = "inventory";
 
         public static final String _ID = BaseColumns._ID;
         public static final String COLUMN_ITEM_NAME = "name";
