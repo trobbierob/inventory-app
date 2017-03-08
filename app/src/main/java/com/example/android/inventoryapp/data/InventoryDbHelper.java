@@ -12,6 +12,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "stock.db";
     private static final String TEXT_TYPE = " TEXT";
     private static final String TEXT_TYPE_NOT_NULL = " TEXT NOT NULL";
+    private static final String INT_TYPE = " INTEGER";
     private static final String INT_TYPE_NOT_NULL = " INTEGER NOT NULL";
     private static final String DEFAULT_ZERO = " DEFAULT 0";
     private static final String COMMA_SEP = ", ";
@@ -20,9 +21,9 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
             + InventoryEntry.TABLE_NAME + " (" + InventoryEntry._ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT"
             + COMMA_SEP + InventoryEntry.COLUMN_ITEM_NAME
-            + TEXT_TYPE_NOT_NULL + COMMA_SEP
-            + InventoryEntry.COLUMN_ITEM_QTY + INT_TYPE_NOT_NULL + COMMA_SEP
-            + InventoryEntry.COLUMN_ITEM_PRICE + INT_TYPE_NOT_NULL + ")";
+            + TEXT_TYPE + COMMA_SEP
+            + InventoryEntry.COLUMN_ITEM_QTY + INT_TYPE + COMMA_SEP
+            + InventoryEntry.COLUMN_ITEM_PRICE + INT_TYPE + ")";
 
     public InventoryDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -35,7 +36,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_CREATE_ENTRIES);
-        onCreate(db);
+        //db.execSQL(SQL_CREATE_ENTRIES);
+        //onCreate(db);
     }
 }
