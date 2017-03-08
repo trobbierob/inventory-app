@@ -25,11 +25,19 @@ public class InventoryCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
+        TextView qtyTextView = (TextView) view.findViewById(R.id.qty);
+        TextView priceTextView = (TextView) view.findViewById(R.id.price);
 
         int nameColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_NAME);
+        int qtyColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_QTY);
+        int priceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_PRICE);
 
         String itemName = cursor.getString(nameColumnIndex);
+        String itemQty = cursor.getString(qtyColumnIndex);
+        String itemPrice = cursor.getString(priceColumnIndex);
 
         nameTextView.setText(itemName);
+        qtyTextView.setText(itemQty);
+        priceTextView.setText(itemPrice);
     }
 }

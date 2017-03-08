@@ -82,7 +82,8 @@ public class MainActivity extends AppCompatActivity implements
         String[] projection = {
                 InventoryEntry._ID,
                 InventoryEntry.COLUMN_ITEM_NAME,
-                InventoryEntry.COLUMN_ITEM_QTY };
+                InventoryEntry.COLUMN_ITEM_QTY,
+                InventoryEntry.COLUMN_ITEM_PRICE};
 
         return new CursorLoader(this,
                 InventoryEntry.CONTENT_URI,
