@@ -216,11 +216,12 @@ public class DetailActivity extends AppCompatActivity implements
             int priceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_PRICE);
 
             String itemName = cursor.getString(nameColumnIndex);
-            int itemQty = cursor.getInt(qtyColumnIndex);
+            //int itemQty = cursor.getInt(qtyColumnIndex);
+            String itemQty = cursor.getString(qtyColumnIndex);
             String itemPrice = cursor.getString(priceColumnIndex);
 
             mNameEditText.setText(itemName);
-            mQuantityEditText.setText(Integer.toString(itemQty));
+            //mQuantityEditText.setSelection(itemQty);
             mPriceEditText.setText(itemPrice);
         }
     }
@@ -228,7 +229,7 @@ public class DetailActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mNameEditText.setText("");
-        mQuantityEditText.setSelection(0);
+        //mQuantityEditText.setSelection(0);
         mPriceEditText.setText("");
     }
 }

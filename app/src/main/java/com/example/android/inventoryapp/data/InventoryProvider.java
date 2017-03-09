@@ -97,6 +97,11 @@ public class InventoryProvider extends ContentProvider {
             throw new IllegalArgumentException("Item requires a name.");
         }
 
+        String price = values.getAsString(InventoryEntry.COLUMN_ITEM_PRICE);
+        if (price == null) {
+            throw new IllegalArgumentException("Item requires a name.");
+        }
+
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         long id = db.insert(InventoryEntry.TABLE_NAME, null, values);
@@ -109,7 +114,44 @@ public class InventoryProvider extends ContentProvider {
         getContext().getContentResolver().notifyChange(uri, null);
 
         return ContentUris.withAppendedId(uri, id);
+    }
 
+    @Override
+    public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case ITEMS:
+                return updatePet(uri, contentValues, selection, selectionArgs);
+            case ITEM_ID:
+                selection = InventoryEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                return updatePet(uri, contentValues, selection, selectionArgs);
+            default:
+                throw new IllegalArgumentException("Update is not supported for " + uri);
+        }
+    }
+
+    private int updatePet(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        if (values.containsKey(InventoryEntry.COLUMN_ITEM_NAME)) {
+            String name = values.getAsString(InventoryEntry.COLUMN_ITEM_NAME);
+            if (name == null) {
+                throw new IllegalArgumentException("Item requires a name");
+            }
+        }
+
+        if (values.size() == 0) {
+            return 0;
+        }
+
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        int rowsUpdated = database.update(InventoryEntry.TABLE_NAME, values, selection, selectionArgs);
+
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsUpdated;
     }
 
     @Override
@@ -117,8 +159,6 @@ public class InventoryProvider extends ContentProvider {
         return 0;
     }
 
-    @Override
-    public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
-        return 0;
-    }
+
+
 }

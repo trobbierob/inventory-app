@@ -1,5 +1,6 @@
 package com.example.android.inventoryapp;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -12,12 +13,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
 
 public class MainActivity extends AppCompatActivity implements
         android.app.LoaderManager.LoaderCallbacks<Cursor> {
+
+    public static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private InventoryCursorAdapter mCursorAdapter;
 
@@ -44,6 +48,17 @@ public class MainActivity extends AppCompatActivity implements
 
         mCursorAdapter = new InventoryCursorAdapter(this, null);
         inListView.setAdapter(mCursorAdapter);
+
+        inListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                Uri currentItemUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id);
+                intent.setData(currentItemUri);
+                startActivity(intent);
+            }
+        });
+
 
         getLoaderManager().initLoader(INVENTORY_LOADER, null, this);
     }
