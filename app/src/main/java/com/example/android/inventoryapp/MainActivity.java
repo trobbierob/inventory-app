@@ -69,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements
         values.put(InventoryEntry.COLUMN_ITEM_NAME, "Headphones");
         values.put(InventoryEntry.COLUMN_ITEM_QTY, 8);
         values.put(InventoryEntry.COLUMN_ITEM_PRICE, 7);
+        values.put(InventoryEntry.COLUMN_ITEM_EMAIL, "cis@amazon.com");
+        values.put(InventoryEntry.COLUMN_ITEM_PHONE, "8882804331");
 
         Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
     }
@@ -98,7 +100,9 @@ public class MainActivity extends AppCompatActivity implements
                 InventoryEntry._ID,
                 InventoryEntry.COLUMN_ITEM_NAME,
                 InventoryEntry.COLUMN_ITEM_QTY,
-                InventoryEntry.COLUMN_ITEM_PRICE};
+                InventoryEntry.COLUMN_ITEM_PRICE,
+                InventoryEntry.COLUMN_ITEM_EMAIL,
+                InventoryEntry.COLUMN_ITEM_PHONE};
 
         return new CursorLoader(this,
                 InventoryEntry.CONTENT_URI,

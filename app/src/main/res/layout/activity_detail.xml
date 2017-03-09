@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     tools:context="com.example.android.inventoryapp.DetailActivity">
 
     <EditText
@@ -14,11 +14,10 @@
         android:hint="Name of product" />
 
     <LinearLayout
+        android:id="@+id/linear_layout"
+        android:layout_below="@+id/name_edit_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-
-
-
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,6 +34,7 @@
             android:textSize="20sp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
+            android:textColor="#FFFFFF"
             android:background="@drawable/layout_bg"
             android:text="+"/>
 
@@ -55,21 +55,37 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:textSize="20sp"
+            android:textColor="#FFFFFF"
             android:background="@drawable/layout_bg"
             android:text="-"/>
 
     </LinearLayout>
 
     <EditText
+        android:layout_below="@id/linear_layout"
         android:id="@+id/price_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Price of product" />
 
     <Button
+        android:layout_below="@id/price_edit_text"
         android:id="@+id/sale_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sale" />
 
-</LinearLayout>
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/multiple_contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:pointerIcon="hand"
+        fab:fab_addButtonColorNormal="@color/colorAccent"
+        fab:fab_addButtonColorPressed="@color/colorAccent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin">
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+</RelativeLayout>

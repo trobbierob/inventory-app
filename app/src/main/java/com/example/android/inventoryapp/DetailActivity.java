@@ -20,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import es.dmoral.toasty.Toasty;
 
@@ -108,6 +110,36 @@ public class DetailActivity extends AppCompatActivity implements
                 }
             }
         });
+
+        FloatingActionButton email = new FloatingActionButton(getBaseContext());
+        email.setColorNormalResId(R.color.colorAccent);
+        email.setColorPressedResId(R.color.colorAccent);
+        email.setIcon(R.drawable.ic_email_white_24dp);
+        email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                if (emailIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(emailIntent);
+                }
+            }
+        });
+
+        FloatingActionButton call = new FloatingActionButton(this);
+        call.setColorNormalResId(R.color.colorAccent);
+        call.setColorPressedResId(R.color.colorAccent);
+        call.setIcon(R.drawable.ic_phone_white_24dp);
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                startActivity(callIntent);
+            }
+        });
+
+        final FloatingActionsMenu multiContact = (FloatingActionsMenu) findViewById(R.id.multiple_contact);
+        multiContact.addButton(email);
+        multiContact.addButton(call);
 
         displayQuantity();
     }

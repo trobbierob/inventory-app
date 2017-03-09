@@ -23,7 +23,9 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
             + COMMA_SEP + InventoryEntry.COLUMN_ITEM_NAME
             + TEXT_TYPE + COMMA_SEP
             + InventoryEntry.COLUMN_ITEM_QTY + INT_TYPE + COMMA_SEP
-            + InventoryEntry.COLUMN_ITEM_PRICE + INT_TYPE + ")";
+            + InventoryEntry.COLUMN_ITEM_PRICE + INT_TYPE + COMMA_SEP
+            + InventoryEntry.COLUMN_ITEM_EMAIL + TEXT_TYPE + COMMA_SEP
+            + InventoryEntry.COLUMN_ITEM_PHONE + TEXT_TYPE + ")";
 
     public InventoryDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

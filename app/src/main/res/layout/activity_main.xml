@@ -58,5 +58,5 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/stock"/>
+        android:src="@drawable/ic_add_shopping_cart_white_24dp"/>
 </RelativeLayout>
