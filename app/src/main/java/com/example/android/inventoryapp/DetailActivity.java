@@ -31,9 +31,13 @@ public class DetailActivity extends AppCompatActivity implements
     private static final int EXISTING_ITEM_LOADER = 0;
     private Uri mCurrentStockUri;
     private EditText mNameEditText;
-    private EditText mQuantityEditText;
+    private TextView mQuantityTextView;
     private EditText mPriceEditText;
+    private EditText mEmailEditText;
+    private EditText mPhoneEditText;
     private int qty = 0;
+
+    private String itemPhone = "";
 
     private boolean mStockHasChanged = false;
 
@@ -62,12 +66,15 @@ public class DetailActivity extends AppCompatActivity implements
         }
 
         mNameEditText = (EditText) findViewById(R.id.name_edit_text);
-        //mQuantityEditText = (EditText) findViewById(R.id.);
+        mQuantityTextView = (TextView) findViewById(R.id.quantity);
         mPriceEditText = (EditText) findViewById(R.id.price_edit_text);
-
+        mEmailEditText = (EditText) findViewById(R.id.email_edit_text);
+        mPhoneEditText = (EditText) findViewById(R.id.phone_edit_text);
 
         mNameEditText.setOnTouchListener(mTouchListener);
         mPriceEditText.setOnTouchListener(mTouchListener);
+        mEmailEditText.setOnTouchListener(mTouchListener);
+        mPhoneEditText.setOnTouchListener(mTouchListener);
 
         TextView plusIcon = (TextView) findViewById(R.id.plus);
         plusIcon.setOnClickListener(new View.OnClickListener() {
@@ -132,8 +139,11 @@ public class DetailActivity extends AppCompatActivity implements
         call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                startActivity(callIntent);
+                Uri number = Uri.parse("tel:" + itemPhone);
+                Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+                if (callIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(callIntent);
+                }
             }
         });
 
@@ -148,6 +158,8 @@ public class DetailActivity extends AppCompatActivity implements
 
         String nameString = mNameEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
+        String emailString = mEmailEditText.getText().toString().trim();
+        String phoneString = mPhoneEditText.getText().toString().trim();
 
         if (mCurrentStockUri == null &&
                 TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) &&
@@ -159,6 +171,8 @@ public class DetailActivity extends AppCompatActivity implements
         values.put(InventoryEntry.COLUMN_ITEM_NAME, nameString);
         values.put(InventoryEntry.COLUMN_ITEM_QTY, qty);
         values.put(InventoryEntry.COLUMN_ITEM_PRICE, priceString);
+        values.put(InventoryEntry.COLUMN_ITEM_EMAIL, emailString);
+        values.put(InventoryEntry.COLUMN_ITEM_PHONE, phoneString);
 
         if (mCurrentStockUri == null) {
             Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
@@ -224,7 +238,9 @@ public class DetailActivity extends AppCompatActivity implements
                 InventoryEntry._ID,
                 InventoryEntry.COLUMN_ITEM_NAME,
                 InventoryEntry.COLUMN_ITEM_QTY,
-                InventoryEntry.COLUMN_ITEM_PRICE };
+                InventoryEntry.COLUMN_ITEM_PRICE,
+                InventoryEntry.COLUMN_ITEM_EMAIL,
+                InventoryEntry.COLUMN_ITEM_PHONE};
 
         return new CursorLoader(this,
                 mCurrentStockUri,
@@ -246,22 +262,29 @@ public class DetailActivity extends AppCompatActivity implements
             int nameColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_NAME);
             int qtyColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_QTY);
             int priceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_PRICE);
+            int emailColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_EMAIL);
+            int phoneColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_PHONE);
 
             String itemName = cursor.getString(nameColumnIndex);
-            //int itemQty = cursor.getInt(qtyColumnIndex);
             String itemQty = cursor.getString(qtyColumnIndex);
             String itemPrice = cursor.getString(priceColumnIndex);
+            String itemEmail = cursor.getString(emailColumnIndex);
+            itemPhone = cursor.getString(phoneColumnIndex);
 
             mNameEditText.setText(itemName);
-            //mQuantityEditText.setSelection(itemQty);
+            mQuantityTextView.setText(itemQty);
             mPriceEditText.setText(itemPrice);
+            mEmailEditText.setText(itemEmail);
+            mPhoneEditText.setText(itemPhone);
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mNameEditText.setText("");
-        //mQuantityEditText.setSelection(0);
+        mQuantityTextView.setText("");
         mPriceEditText.setText("");
+        mEmailEditText.setText("");
+        mPhoneEditText.setText("");
     }
 }

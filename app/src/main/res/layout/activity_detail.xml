@@ -4,7 +4,7 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context="com.example.android.inventoryapp.DetailActivity">
 
     <EditText
@@ -68,8 +68,22 @@
         android:layout_height="wrap_content"
         android:hint="Price of product" />
 
-    <Button
+    <EditText
         android:layout_below="@id/price_edit_text"
+        android:id="@+id/email_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email of Producer" />
+
+    <EditText
+        android:layout_below="@id/email_edit_text"
+        android:id="@+id/phone_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Phone of Producer" />
+
+    <Button
+        android:layout_below="@id/phone_edit_text"
         android:id="@+id/sale_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -79,12 +93,11 @@
         android:id="@+id/multiple_contact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:pointerIcon="hand"
         fab:fab_addButtonColorNormal="@color/colorAccent"
         fab:fab_addButtonColorPressed="@color/colorAccent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/fab_margin">
+        android:layout_margin="8dp">
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
