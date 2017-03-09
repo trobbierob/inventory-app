@@ -75,6 +75,10 @@ public class MainActivity extends AppCompatActivity implements
         Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
     }
 
+    private void deleteAll() {
+        getContentResolver().delete(InventoryEntry.CONTENT_URI, null, null);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -88,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements
                 insertItem();
                 return true;
             case R.id.action_delete:
+                deleteAll();
                 return true;
         }
         return super.onOptionsItemSelected(item);
