@@ -8,6 +8,7 @@
     tools:context="com.example.android.inventoryapp.DetailActivity">
 
     <EditText
+        android:id="@+id/name_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Name of product" />
@@ -17,11 +18,7 @@
         android:layout_height="wrap_content">
 
 
-        <TextView
-            android:id="@+id/plus_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"/>
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,28 +26,42 @@
             android:textSize="20sp"
             android:text="Quantity: " />
 
-        <Button
+
+        <TextView
             android:id="@+id/plus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:background="@drawable/layout_bg"
             android:text="+"/>
 
         <TextView
             android:id="@+id/quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:textSize="20sp"
             android:hint="0" />
 
-        <Button
+        <TextView
             android:id="@+id/minus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textSize="20sp"
+            android:background="@drawable/layout_bg"
             android:text="-"/>
 
     </LinearLayout>
 
     <EditText
+        android:id="@+id/price_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Price of product" />
@@ -60,6 +71,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sale" />
-
 
 </LinearLayout>
