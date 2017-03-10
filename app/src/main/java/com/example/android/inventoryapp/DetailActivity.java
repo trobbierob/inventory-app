@@ -10,6 +10,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -20,6 +21,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +43,11 @@ public class DetailActivity extends AppCompatActivity implements
     private EditText mPriceEditText;
     private EditText mEmailEditText;
     private EditText mPhoneEditText;
+    private ImageView productImageView;
+    private RadioGroup radioImages;
+
     private int qty = 0;
+
 
     private String itemPhone = "";
 
@@ -62,10 +69,13 @@ public class DetailActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         mCurrentStockUri = intent.getData();
 
+        productImageView = (ImageView) findViewById(R.id.product_profile);
+
         if (mCurrentStockUri == null) {
             setTitle("Add an Item");
             invalidateOptionsMenu();
         } else {
+            productImageView.setVisibility(View.VISIBLE);
             setTitle("Edit Item");
             getLoaderManager().initLoader(EXISTING_ITEM_LOADER, null, DetailActivity.this);
         }
@@ -81,6 +91,8 @@ public class DetailActivity extends AppCompatActivity implements
         mQuantityEditText.setOnTouchListener(mTouchListener);
         mEmailEditText.setOnTouchListener(mTouchListener);
         mPhoneEditText.setOnTouchListener(mTouchListener);
+
+        radioImages = (RadioGroup) findViewById(R.id.radio_group);
 
         TextView plusIcon = (TextView) findViewById(R.id.plus);
         plusIcon.setOnClickListener(new View.OnClickListener() {
@@ -158,6 +170,29 @@ public class DetailActivity extends AppCompatActivity implements
         multiContact.addButton(call);
 
         displayQuantity();
+        radioImage();
+    }
+
+    /**
+     * In this method, the user selects a radio button when creating a
+     * product and it assigns an image to store in the list item.
+     */
+    private void radioImage() {
+        radioImages.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int checkedId) {
+                if(checkedId == R.id.convenience) {
+
+                } else if(checkedId == R.id.shopping) {
+
+
+                } else if(checkedId == R.id.specialty) {
+
+                } else {
+
+                }
+            }
+        });
     }
 
     private void saveItem() {
@@ -347,11 +382,9 @@ public class DetailActivity extends AppCompatActivity implements
                         Toast.LENGTH_SHORT).show();
             }
         }
-
         // Close the activity
         finish();
     }
-
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {

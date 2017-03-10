@@ -103,6 +103,21 @@ public class InventoryProvider extends ContentProvider {
             throw new IllegalArgumentException("Item requires a name.");
         }
 
+        Integer quantity = values.getAsInteger(InventoryEntry.COLUMN_ITEM_QTY);
+        if (quantity == null || quantity < 0) {
+            throw new IllegalArgumentException("Item requires a positive quantity.");
+        }
+
+        String email = values.getAsString(InventoryEntry.COLUMN_ITEM_EMAIL);
+        if (email == null) {
+            throw new IllegalArgumentException("Item requires a email.");
+        }
+
+        String phone = values.getAsString(InventoryEntry.COLUMN_ITEM_PHONE);
+        if (phone == null) {
+            throw new IllegalArgumentException("Item requires a phone number.");
+        }
+
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         long id = db.insert(InventoryEntry.TABLE_NAME, null, values);

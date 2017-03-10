@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements
         ContentValues values = new ContentValues();
         values.put(InventoryEntry.COLUMN_ITEM_NAME, "Headphones");
         values.put(InventoryEntry.COLUMN_ITEM_QTY, 8);
-        values.put(InventoryEntry.COLUMN_ITEM_PRICE, 7);
+        values.put(InventoryEntry.COLUMN_ITEM_PRICE, "$7.99");
         values.put(InventoryEntry.COLUMN_ITEM_EMAIL, "cis@amazon.com");
         values.put(InventoryEntry.COLUMN_ITEM_PHONE, "8882804331");
 
