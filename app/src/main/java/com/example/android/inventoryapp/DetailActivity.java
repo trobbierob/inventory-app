@@ -48,7 +48,6 @@ public class DetailActivity extends AppCompatActivity implements
 
     private int qty = 0;
 
-
     private String itemPhone = "";
 
     private boolean mStockHasChanged = false;
@@ -395,7 +394,8 @@ public class DetailActivity extends AppCompatActivity implements
                 InventoryEntry.COLUMN_ITEM_QTY,
                 InventoryEntry.COLUMN_ITEM_PRICE,
                 InventoryEntry.COLUMN_ITEM_EMAIL,
-                InventoryEntry.COLUMN_ITEM_PHONE};
+                InventoryEntry.COLUMN_ITEM_PHONE,
+                InventoryEntry.COLUMN_ITEM_IMAGE};
 
         return new CursorLoader(this,
                 mCurrentStockUri,
@@ -419,6 +419,7 @@ public class DetailActivity extends AppCompatActivity implements
             int priceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_PRICE);
             int emailColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_EMAIL);
             int phoneColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_PHONE);
+            int imageColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_IMAGE);
 
             String itemName = cursor.getString(nameColumnIndex);
             String itemQty = cursor.getString(qtyColumnIndex);

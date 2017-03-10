@@ -15,6 +15,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
     private static final String INT_TYPE = " INTEGER";
     private static final String INT_TYPE_NOT_NULL = " INTEGER NOT NULL";
     private static final String DEFAULT_ZERO = " DEFAULT 0";
+    private static final String BLOB = " BLOB";
     private static final String COMMA_SEP = ", ";
 
     private static final String SQL_CREATE_ENTRIES = "CREATE TABLE "
@@ -25,7 +26,8 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
             + InventoryEntry.COLUMN_ITEM_QTY + INT_TYPE + COMMA_SEP
             + InventoryEntry.COLUMN_ITEM_PRICE + INT_TYPE + COMMA_SEP
             + InventoryEntry.COLUMN_ITEM_EMAIL + TEXT_TYPE + COMMA_SEP
-            + InventoryEntry.COLUMN_ITEM_PHONE + TEXT_TYPE + ")";
+            + InventoryEntry.COLUMN_ITEM_PHONE + TEXT_TYPE + COMMA_SEP
+            + InventoryEntry.COLUMN_ITEM_IMAGE + BLOB + ")";
 
     public InventoryDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
