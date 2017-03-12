@@ -287,6 +287,13 @@ public class DetailActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    public void testSubtract() {
+
+        qty = qty -1;
+        displayQuantity();
+
+    }
+
     public void displayQuantity() {
         EditText quantityViewEditText = (EditText) findViewById(R.id.quantity_edit_text);
         quantityViewEditText.setText(String.valueOf(qty));

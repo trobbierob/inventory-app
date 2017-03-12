@@ -41,15 +41,15 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
-        ListView inListView = (ListView) findViewById(R.id.list);
+        ListView inventoryListView = (ListView) findViewById(R.id.list);
 
         View emptyView = findViewById(R.id.empty_view);
-        inListView.setEmptyView(emptyView);
+        inventoryListView.setEmptyView(emptyView);
 
         mCursorAdapter = new InventoryCursorAdapter(this, null);
-        inListView.setAdapter(mCursorAdapter);
+        inventoryListView.setAdapter(mCursorAdapter);
 
-        inListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        inventoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
@@ -59,26 +59,8 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
-        final DetailActivity detailActivity = new DetailActivity();
-
-
-        /**
-        Button saleButton = (Button) findViewById(R.id.sale_btn);
-        saleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                    detailActivity.displayQuantity();
-
-            }
-        });
-         */
-
-
         getLoaderManager().initLoader(INVENTORY_LOADER, null, this);
     }
-
-
 
     private void insertItem() {
 
