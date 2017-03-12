@@ -19,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -74,7 +73,7 @@ public class DetailActivity extends AppCompatActivity implements
             setTitle("Add an Item");
             invalidateOptionsMenu();
         } else {
-            productImageView.setVisibility(View.VISIBLE);
+            productImageView.setVisibility(View.GONE);
             setTitle("Edit Item");
             getLoaderManager().initLoader(EXISTING_ITEM_LOADER, null, DetailActivity.this);
         }
@@ -109,20 +108,6 @@ public class DetailActivity extends AppCompatActivity implements
 
         TextView minusIcon = (TextView) findViewById(R.id.minus);
         minusIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (qty <= 0) {
-                    Toasty.error(DetailActivity.this, "Quantity Cannot Be Less Than 0",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    qty = qty - 1;
-                    displayQuantity();
-                }
-            }
-        });
-
-        Button saleButton = (Button) findViewById(R.id.sale_btn);
-        saleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (qty <= 0) {
@@ -172,6 +157,16 @@ public class DetailActivity extends AppCompatActivity implements
         radioImage();
     }
 
+    public void subTract() {
+                if (qty <= 0) {
+                    //Toasty.error(DetailActivity.this, "Quantity Cannot Be Less Than 0", Toast.LENGTH_SHORT).show();
+                    Log.v(LOG_TAG, "I'm in the if!!");
+                } else {
+                    qty = qty - 1;
+                    displayQuantity();
+                }
+    }
+
     /**
      * In this method, the user selects a radio button when creating a
      * product and it assigns an image to store in the list item.
@@ -183,7 +178,6 @@ public class DetailActivity extends AppCompatActivity implements
                 if(checkedId == R.id.convenience) {
 
                 } else if(checkedId == R.id.shopping) {
-
 
                 } else if(checkedId == R.id.specialty) {
 
@@ -285,13 +279,6 @@ public class DetailActivity extends AppCompatActivity implements
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void testSubtract() {
-
-        qty = qty -1;
-        displayQuantity();
-
     }
 
     public void displayQuantity() {

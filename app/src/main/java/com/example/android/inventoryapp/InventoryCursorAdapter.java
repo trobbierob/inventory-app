@@ -31,43 +31,35 @@ public class InventoryCursorAdapter extends CursorAdapter {
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
         final TextView qtyTextView = (TextView) view.findViewById(R.id.qty);
         TextView priceTextView = (TextView) view.findViewById(R.id.price);
-        Button saleButton = (Button) view.findViewById(R.id.sale);
 
         int nameColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_NAME);
         int qtyColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_QTY);
         int priceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_PRICE);
 
         String itemName = cursor.getString(nameColumnIndex);
-        final String itemQty = cursor.getString(qtyColumnIndex);
+        final int itemQty = cursor.getInt(qtyColumnIndex);
         String itemPrice = cursor.getString(priceColumnIndex);
-
-        Log.v(LOG_TAG, "String itemQty is: " + itemQty);
+        Log.v(LOG_TAG, "itemQty is: " + itemQty);
 
         nameTextView.setText(itemName);
-        qtyTextView.setText(itemQty);
+        qtyTextView.setText("" + itemQty);       /**/
         priceTextView.setText(itemPrice);
 
+        Button saleButton = (Button) view.findViewById(R.id.sale);
         saleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                qtyTextView.setText(change(itemQty));
-                Log.v(LOG_TAG, "This is the button");
+                Log.v(LOG_TAG, "I'm in the button!!");
             }
         });
     }
 
-    private String change(String qty) {
-
-        Log.v(LOG_TAG, "Change method, qty is: " + qty);
-        int qtyNum = Integer.parseInt(qty);
-        Log.v(LOG_TAG, "qtyNum is: " + qtyNum);
-
-        if(qtyNum <= 0) {
-
+    private int subtract(int qty) {
+        if(qty <= 0) {
+            // Do nothing
         } else {
-            qtyNum = qtyNum - 1;
+            qty = qty - 1;
         }
-        return Integer.toString(qtyNum);
+        return qty;
     }
-
 }

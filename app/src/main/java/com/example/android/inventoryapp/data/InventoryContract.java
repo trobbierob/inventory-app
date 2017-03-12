@@ -33,6 +33,5 @@ public final class InventoryContract {
         public static final String COLUMN_ITEM_EMAIL = "email";
         public static final String COLUMN_ITEM_PHONE = "phone";
         public static final String COLUMN_ITEM_IMAGE = "image";
-
     }
 }
