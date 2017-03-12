@@ -6,6 +6,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +18,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
+
+import java.io.ByteArrayOutputStream;
 
 public class MainActivity extends AppCompatActivity implements
         android.app.LoaderManager.LoaderCallbacks<Cursor> {
@@ -64,12 +67,20 @@ public class MainActivity extends AppCompatActivity implements
 
     private void insertItem() {
 
+        int w = 30, h = 30;
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        Bitmap bmp = Bitmap.createBitmap(w, h, conf); // this creates a MUTABLE bitmap
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        byte[] byteArray = stream.toByteArray();
+
         ContentValues values = new ContentValues();
         values.put(InventoryEntry.COLUMN_ITEM_NAME, "Headphones");
         values.put(InventoryEntry.COLUMN_ITEM_QTY, 8);
         values.put(InventoryEntry.COLUMN_ITEM_PRICE, "$7.99");
         values.put(InventoryEntry.COLUMN_ITEM_EMAIL, "cis@amazon.com");
         values.put(InventoryEntry.COLUMN_ITEM_PHONE, "8882804331");
+        values.put(InventoryEntry.COLUMN_ITEM_IMAGE, byteArray);
 
         Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
     }
