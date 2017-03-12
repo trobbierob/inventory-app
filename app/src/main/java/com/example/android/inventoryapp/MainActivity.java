@@ -59,9 +59,26 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
+        final DetailActivity detailActivity = new DetailActivity();
+
+
+        /**
+        Button saleButton = (Button) findViewById(R.id.sale_btn);
+        saleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    detailActivity.displayQuantity();
+
+            }
+        });
+         */
+
 
         getLoaderManager().initLoader(INVENTORY_LOADER, null, this);
     }
+
+
 
     private void insertItem() {
 
