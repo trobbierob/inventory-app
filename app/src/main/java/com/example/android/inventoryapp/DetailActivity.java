@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -31,6 +33,8 @@ import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
+import java.io.ByteArrayOutputStream;
+
 import es.dmoral.toasty.Toasty;
 
 public class DetailActivity extends AppCompatActivity implements
@@ -39,6 +43,7 @@ public class DetailActivity extends AppCompatActivity implements
     public static final String LOG_TAG = DetailActivity.class.getSimpleName();
     private static final int EXISTING_ITEM_LOADER = 0;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_TAKE_PHOTO = 1;
     private Uri mCurrentStockUri;
     private EditText mNameEditText;
     private EditText mQuantityEditText;
@@ -48,6 +53,10 @@ public class DetailActivity extends AppCompatActivity implements
     private ImageView productImageView;
     private RadioGroup radioImages;
     private Button mCameraButton;
+    private ImageView mImageView;
+    private String mCurrentPhotoPath;
+    private byte[] byteArray;
+    Bitmap imageBitmap;
 
     private int qty = 0;
 
@@ -88,6 +97,7 @@ public class DetailActivity extends AppCompatActivity implements
         mEmailEditText = (EditText) findViewById(R.id.email_edit_text);
         mPhoneEditText = (EditText) findViewById(R.id.phone_edit_text);
         mCameraButton = (Button) findViewById(R.id.photo_btn);
+        mImageView = (ImageView) findViewById(R.id.image_view);
 
         mNameEditText.setOnTouchListener(mTouchListener);
         mPriceEditText.setOnTouchListener(mTouchListener);
@@ -95,6 +105,7 @@ public class DetailActivity extends AppCompatActivity implements
         mEmailEditText.setOnTouchListener(mTouchListener);
         mPhoneEditText.setOnTouchListener(mTouchListener);
         mCameraButton.setOnTouchListener(mTouchListener);
+        mImageView.setOnTouchListener(mTouchListener);
 
         radioImages = (RadioGroup) findViewById(R.id.radio_group);
 
@@ -177,14 +188,30 @@ public class DetailActivity extends AppCompatActivity implements
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            //Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imageBitmap = (Bitmap) extras.get("data");
+            getBytes(imageBitmap);
+            mImageView.setImageBitmap(imageBitmap);
+        }
+    }
+
+    public void getBytes(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        byteArray = stream.toByteArray();
+    }
+
     public void subTract() {
-                if (qty <= 0) {
-                    //Toasty.error(DetailActivity.this, "Quantity Cannot Be Less Than 0", Toast.LENGTH_SHORT).show();
-                    Log.v(LOG_TAG, "I'm in the if!!");
-                } else {
-                    qty = qty - 1;
-                    displayQuantity();
-                }
+        if (qty <= 0) {
+            Toasty.error(DetailActivity.this, "Quantity Cannot Be Less Than 0", Toast.LENGTH_SHORT).show();
+        } else {
+            qty = qty - 1;
+            displayQuantity();
+        }
     }
 
     /**
@@ -195,11 +222,11 @@ public class DetailActivity extends AppCompatActivity implements
         radioImages.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int checkedId) {
-                if(checkedId == R.id.convenience) {
+                if (checkedId == R.id.convenience) {
 
-                } else if(checkedId == R.id.shopping) {
+                } else if (checkedId == R.id.shopping) {
 
-                } else if(checkedId == R.id.specialty) {
+                } else if (checkedId == R.id.specialty) {
 
                 } else {
 
@@ -228,6 +255,7 @@ public class DetailActivity extends AppCompatActivity implements
         values.put(InventoryEntry.COLUMN_ITEM_PRICE, priceString);
         values.put(InventoryEntry.COLUMN_ITEM_EMAIL, emailString);
         values.put(InventoryEntry.COLUMN_ITEM_PHONE, phoneString);
+        values.put(InventoryEntry.COLUMN_ITEM_IMAGE, byteArray);
 
         if (mCurrentStockUri == null) {
             Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
@@ -376,7 +404,7 @@ public class DetailActivity extends AppCompatActivity implements
      */
     private void deleteItem() {
         // Only perform the delete if this is an existing pet.
-        if (mCurrentStockUri!= null) {
+        if (mCurrentStockUri != null) {
 
             Log.v(LOG_TAG, "mCurrentStockUri is: " + mCurrentStockUri);
 
@@ -439,13 +467,17 @@ public class DetailActivity extends AppCompatActivity implements
             String itemQty = cursor.getString(qtyColumnIndex);
             String itemPrice = cursor.getString(priceColumnIndex);
             String itemEmail = cursor.getString(emailColumnIndex);
+            byte[] image = cursor.getBlob(imageColumnIndex);
             itemPhone = cursor.getString(phoneColumnIndex);
+
+            Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
 
             mNameEditText.setText(itemName);
             mQuantityEditText.setText(itemQty);
             mPriceEditText.setText(itemPrice);
             mEmailEditText.setText(itemEmail);
             mPhoneEditText.setText(itemPhone);
+            mImageView.setImageBitmap(bitmap);
         }
     }
 
@@ -456,5 +488,6 @@ public class DetailActivity extends AppCompatActivity implements
         mPriceEditText.setText("");
         mEmailEditText.setText("");
         mPhoneEditText.setText("");
+        mImageView.setImageBitmap(null);
     }
 }
