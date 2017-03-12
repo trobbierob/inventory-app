@@ -10,6 +10,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.IdRes;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -36,6 +38,7 @@ public class DetailActivity extends AppCompatActivity implements
 
     public static final String LOG_TAG = DetailActivity.class.getSimpleName();
     private static final int EXISTING_ITEM_LOADER = 0;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
     private Uri mCurrentStockUri;
     private EditText mNameEditText;
     private EditText mQuantityEditText;
@@ -44,6 +47,7 @@ public class DetailActivity extends AppCompatActivity implements
     private EditText mPhoneEditText;
     private ImageView productImageView;
     private RadioGroup radioImages;
+    private Button mCameraButton;
 
     private int qty = 0;
 
@@ -83,12 +87,14 @@ public class DetailActivity extends AppCompatActivity implements
         mPriceEditText = (EditText) findViewById(R.id.price_edit_text);
         mEmailEditText = (EditText) findViewById(R.id.email_edit_text);
         mPhoneEditText = (EditText) findViewById(R.id.phone_edit_text);
+        mCameraButton = (Button) findViewById(R.id.photo_btn);
 
         mNameEditText.setOnTouchListener(mTouchListener);
         mPriceEditText.setOnTouchListener(mTouchListener);
         mQuantityEditText.setOnTouchListener(mTouchListener);
         mEmailEditText.setOnTouchListener(mTouchListener);
         mPhoneEditText.setOnTouchListener(mTouchListener);
+        mCameraButton.setOnTouchListener(mTouchListener);
 
         radioImages = (RadioGroup) findViewById(R.id.radio_group);
 
@@ -153,8 +159,22 @@ public class DetailActivity extends AppCompatActivity implements
         multiContact.addButton(email);
         multiContact.addButton(call);
 
+        mCameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                takePhoto();
+            }
+        });
+
         displayQuantity();
         radioImage();
+    }
+
+    private void takePhoto() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 
     public void subTract() {

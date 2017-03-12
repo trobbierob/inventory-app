@@ -135,8 +135,6 @@
 
     </RadioGroup>
 
-
-
     <Button
         android:layout_below="@+id/radio_group"
         android:id="@+id/photo_btn"
