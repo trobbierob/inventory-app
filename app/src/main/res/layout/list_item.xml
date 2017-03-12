@@ -6,6 +6,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:orientation="horizontal">
@@ -18,16 +19,10 @@
 
         <TextView
             android:id="@+id/qty"
+            android:paddingLeft="48dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Qty of Item" />
-
-        <Button
-            android:id="@+id/sale"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:text="Sale" />
 
     </LinearLayout>
 
@@ -43,8 +38,13 @@
             android:layout_height="wrap_content"
             android:hint="Price of Item" />
 
+        <Button
+            android:id="@+id/sale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:text="Sale" />
+
         </LinearLayout>
-
-
 
 </RelativeLayout>

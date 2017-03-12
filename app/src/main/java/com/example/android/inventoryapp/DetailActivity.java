@@ -13,7 +13,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.IdRes;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -25,7 +24,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +49,6 @@ public class DetailActivity extends AppCompatActivity implements
     private EditText mEmailEditText;
     private EditText mPhoneEditText;
     private ImageView productImageView;
-    private RadioGroup radioImages;
     private Button mCameraButton;
     private ImageView mImageView;
     private String mCurrentPhotoPath;
@@ -106,8 +103,6 @@ public class DetailActivity extends AppCompatActivity implements
         mPhoneEditText.setOnTouchListener(mTouchListener);
         mCameraButton.setOnTouchListener(mTouchListener);
         mImageView.setOnTouchListener(mTouchListener);
-
-        radioImages = (RadioGroup) findViewById(R.id.radio_group);
 
         TextView plusIcon = (TextView) findViewById(R.id.plus);
         plusIcon.setOnClickListener(new View.OnClickListener() {
@@ -178,7 +173,6 @@ public class DetailActivity extends AppCompatActivity implements
         });
 
         displayQuantity();
-        radioImage();
     }
 
     private void takePhoto() {
@@ -192,7 +186,6 @@ public class DetailActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            //Bitmap imageBitmap = (Bitmap) extras.get("data");
             imageBitmap = (Bitmap) extras.get("data");
             getBytes(imageBitmap);
             mImageView.setImageBitmap(imageBitmap);
@@ -214,27 +207,6 @@ public class DetailActivity extends AppCompatActivity implements
         }
     }
 
-    /**
-     * In this method, the user selects a radio button when creating a
-     * product and it assigns an image to store in the list item.
-     */
-    private void radioImage() {
-        radioImages.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int checkedId) {
-                if (checkedId == R.id.convenience) {
-
-                } else if (checkedId == R.id.shopping) {
-
-                } else if (checkedId == R.id.specialty) {
-
-                } else {
-
-                }
-            }
-        });
-    }
-
     private void saveItem() {
 
         String nameString = mNameEditText.getText().toString().trim();
@@ -246,6 +218,7 @@ public class DetailActivity extends AppCompatActivity implements
         if (mCurrentStockUri == null &&
                 TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) &&
                 qty == 0) {
+            //TODO: Make it so that a user must take a photo before item can be saved
             return;
         }
 

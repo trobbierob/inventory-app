@@ -101,42 +101,8 @@
         android:layout_height="wrap_content"
         android:text="Type of Product"/>
 
-
-    <RadioGroup
-        android:id="@+id/radio_group"
-        android:layout_below="@id/type_of_product"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <RadioButton
-            android:id="@+id/convenience"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Convenience"/>
-
-        <RadioButton
-            android:id="@+id/shopping"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Shopping"/>
-
-        <RadioButton
-            android:id="@+id/specialty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Specialty"/>
-
-        <RadioButton
-            android:id="@+id/unsought"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Unsought"/>
-
-    </RadioGroup>
-
     <Button
-        android:layout_below="@+id/radio_group"
+        android:layout_below="@+id/type_of_product"
         android:id="@+id/photo_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
