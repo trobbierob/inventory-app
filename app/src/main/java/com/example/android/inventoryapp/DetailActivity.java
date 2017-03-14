@@ -39,15 +39,15 @@ public class DetailActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String LOG_TAG = DetailActivity.class.getSimpleName();
-    private static final int EXISTING_ITEM_LOADER = 0;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private Uri mCurrentStockUri;
-    private EditText mNameEditText;
+    private static final int EXISTING_ITEM_LOADER = 0;
     private EditText mQuantityEditText;
+    private ImageView productImageView;
     private EditText mPriceEditText;
     private EditText mEmailEditText;
     private EditText mPhoneEditText;
-    private ImageView productImageView;
+    private EditText mNameEditText;
+    private Uri mCurrentStockUri;
     private Button mCameraButton;
     private ImageView mImageView;
     private byte[] byteArray;
@@ -377,11 +377,11 @@ public class DetailActivity extends AppCompatActivity implements
             // Show a toast message depending on whether or not the delete was successful.
             if (rowsDeleted == 0) {
                 // If no rows were deleted, then there was an error with the delete.
-                Toast.makeText(this, getString(R.string.delete_item_failed),
+                Toasty.error(DetailActivity.this, getString(R.string.delete_item_failed),
                         Toast.LENGTH_SHORT).show();
             } else {
                 // Otherwise, the delete was successful and we can display a toast.
-                Toast.makeText(this, getString(R.string.delete_item_successful),
+                Toasty.success(DetailActivity.this, getString(R.string.delete_item_successful),
                         Toast.LENGTH_SHORT).show();
             }
         }

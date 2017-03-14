@@ -16,10 +16,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
 
 import java.io.ByteArrayOutputStream;
+
+import es.dmoral.toasty.Toasty;
 
 public class MainActivity extends AppCompatActivity implements
         android.app.LoaderManager.LoaderCallbacks<Cursor> {
@@ -83,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements
         values.put(InventoryEntry.COLUMN_ITEM_IMAGE, byteArray);
 
         getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
+
+        Toasty.success(this, "Item Saved", Toast.LENGTH_SHORT).show();
     }
 
     private void deleteAll() {

@@ -11,8 +11,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
+
+import es.dmoral.toasty.Toasty;
 
 public class InventoryCursorAdapter extends CursorAdapter {
 
@@ -46,7 +49,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
         final String itemPrice = cursor.getString(priceColumnIndex);
 
         nameTextView.setText(itemName);
-        qtyTextView.setText("" + itemQty);
+        qtyTextView.setText("Qty: " + itemQty);
         priceTextView.setText(itemPrice);
 
         final int position = cursor.getPosition();
@@ -62,6 +65,9 @@ public class InventoryCursorAdapter extends CursorAdapter {
                     ContentValues values = new ContentValues();
                     values.put(InventoryEntry.COLUMN_ITEM_QTY, subtract(itemQty));
                     context.getContentResolver().update(currentItemUri, values, null, null);
+                } else {
+                    Toasty.info(context, "Sold Out!",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
