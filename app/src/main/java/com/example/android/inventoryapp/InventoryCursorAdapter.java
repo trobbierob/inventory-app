@@ -1,5 +1,7 @@
 package com.example.android.inventoryapp;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -34,33 +36,54 @@ public class InventoryCursorAdapter extends CursorAdapter {
         final TextView qtyTextView = (TextView) view.findViewById(R.id.qty);
         TextView priceTextView = (TextView) view.findViewById(R.id.price);
 
-        int idColumnIndex = cursor.getColumnIndex(InventoryEntry._ID);
+        final int idColumnIndex = cursor.getColumnIndex(InventoryEntry._ID);
         int nameColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_NAME);
-        int qtyColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_QTY);
+        final int qtyColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_QTY);
         int priceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_PRICE);
-        Log.v(LOG_TAG, "nameColumnIndex is: " + nameColumnIndex);
+        int emailColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_EMAIL);
+        int phoneColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_PHONE);
+        int imageColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ITEM_IMAGE);
 
-        final int itemId = cursor.getInt(idColumnIndex);
+        //final int itemId = cursor.getInt(idColumnIndex);
+        final long itemId = cursor.getLong(idColumnIndex);
+
+
         Log.v(LOG_TAG, "itemId is: " + itemId);
-        String itemName = cursor.getString(nameColumnIndex);
+        final String itemName = cursor.getString(nameColumnIndex);
         final int itemQty = cursor.getInt(qtyColumnIndex);
-        String itemPrice = cursor.getString(priceColumnIndex);
-        Log.v(LOG_TAG, "itemName is: " + itemName);
-        Log.v(LOG_TAG, "itemQty is: " + itemQty);
+        final String itemPrice = cursor.getString(priceColumnIndex);
+        final String itemEmail = cursor.getString(emailColumnIndex);
+        final String itemPhone = cursor.getString(phoneColumnIndex);
+        //final byte[] itemImage = cursor.getBlob(imageColumnIndex);
 
         nameTextView.setText(itemName);
         qtyTextView.setText("" + itemQty);       /**/
         priceTextView.setText(itemPrice);
 
         final int position = cursor.getPosition();
-
+        cursor.moveToPosition(position);
         Button saleButton = (Button) view.findViewById(R.id.sale);
         saleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cursor.moveToPosition(position);
-                Log.v(LOG_TAG, "The position is: " + position);
-                Log.v(LOG_TAG, "itemId is: " + itemId);
+
+                Uri currentItemUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, itemId);
+
+                if(itemQty > 0) {
+
+
+                    ContentValues values = new ContentValues();
+
+                    //values.put(InventoryEntry.COLUMN_ITEM_NAME, itemName);
+                    values.put(InventoryEntry.COLUMN_ITEM_QTY, subtract(itemQty));
+                    Log.v(LOG_TAG, "itemQty is: " + (subtract(itemQty)));
+                    //values.put(InventoryEntry.COLUMN_ITEM_PRICE, itemPrice);
+                    //values.put(InventoryEntry.COLUMN_ITEM_EMAIL, itemEmail);
+                    //values.put(InventoryEntry.COLUMN_ITEM_PHONE, itemPhone);
+                    //values.put(InventoryEntry.COLUMN_ITEM_IMAGE, byteArray);
+
+                    context.getContentResolver().update(currentItemUri, values, null, null);
+                }
             }
         });
     }

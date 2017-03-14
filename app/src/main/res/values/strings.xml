@@ -2,7 +2,7 @@
     <string name="app_name">Inventory App</string>
     <string name="delete_item_successful">Item deleted</string>
     <string name="delete_item_failed">Error with deleting item</string>
-    <string name="delete_dialog_msg">Delete this pet?</string>
+    <string name="delete_dialog_msg">Delete this item?</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
 </resources>
