@@ -41,7 +41,6 @@ public class DetailActivity extends AppCompatActivity implements
     public static final String LOG_TAG = DetailActivity.class.getSimpleName();
     private static final int EXISTING_ITEM_LOADER = 0;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int REQUEST_TAKE_PHOTO = 1;
     private Uri mCurrentStockUri;
     private EditText mNameEditText;
     private EditText mQuantityEditText;
@@ -51,7 +50,6 @@ public class DetailActivity extends AppCompatActivity implements
     private ImageView productImageView;
     private Button mCameraButton;
     private ImageView mImageView;
-    private String mCurrentPhotoPath;
     private byte[] byteArray;
     Bitmap imageBitmap;
 
@@ -198,15 +196,6 @@ public class DetailActivity extends AppCompatActivity implements
         byteArray = stream.toByteArray();
     }
 
-    public void subTract() {
-        if (qty <= 0) {
-            Toasty.error(DetailActivity.this, "Quantity Cannot Be Less Than 0", Toast.LENGTH_SHORT).show();
-        } else {
-            qty = qty - 1;
-            displayQuantity();
-        }
-    }
-
     private void saveItem() {
 
         String nameString = mNameEditText.getText().toString().trim();
@@ -312,7 +301,7 @@ public class DetailActivity extends AppCompatActivity implements
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Discard your changes and quit editing?");
+        builder.setMessage("You sure you want to do that?");
         builder.setPositiveButton("Discard", discardButtonClickListener);
         builder.setNegativeButton("Keep Editing", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {

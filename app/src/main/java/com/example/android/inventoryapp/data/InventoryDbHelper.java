@@ -20,9 +20,8 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_ENTRIES = "CREATE TABLE "
             + InventoryEntry.TABLE_NAME + " (" + InventoryEntry._ID
-            + " INTEGER PRIMARY KEY AUTOINCREMENT"
-            + COMMA_SEP + InventoryEntry.COLUMN_ITEM_NAME
-            + TEXT_TYPE + COMMA_SEP
+            + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP
+            + InventoryEntry.COLUMN_ITEM_NAME + TEXT_TYPE_NOT_NULL + COMMA_SEP
             + InventoryEntry.COLUMN_ITEM_QTY + INT_TYPE + COMMA_SEP
             + InventoryEntry.COLUMN_ITEM_PRICE + INT_TYPE + COMMA_SEP
             + InventoryEntry.COLUMN_ITEM_EMAIL + TEXT_TYPE + COMMA_SEP
@@ -40,7 +39,5 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //db.execSQL(SQL_CREATE_ENTRIES);
-        //onCreate(db);
     }
 }

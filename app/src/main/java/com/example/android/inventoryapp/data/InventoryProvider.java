@@ -63,7 +63,6 @@ public class InventoryProvider extends ContentProvider {
         }
 
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
-
         return cursor;
     }
 
@@ -100,35 +99,33 @@ public class InventoryProvider extends ContentProvider {
 
         String price = values.getAsString(InventoryEntry.COLUMN_ITEM_PRICE);
         if (price == null) {
-            throw new IllegalArgumentException("Item requires a name.");
+            throw new IllegalArgumentException("Item requires a price.");
         }
 
         Integer quantity = values.getAsInteger(InventoryEntry.COLUMN_ITEM_QTY);
         if (quantity == null || quantity < 0) {
-            throw new IllegalArgumentException("Item requires a positive quantity.");
+            throw new IllegalArgumentException("Keep it positive #Quantity");
         }
 
         String email = values.getAsString(InventoryEntry.COLUMN_ITEM_EMAIL);
         if (email == null) {
-            throw new IllegalArgumentException("Item requires a email.");
+            throw new IllegalArgumentException("Can I get your email?");
         }
 
         String phone = values.getAsString(InventoryEntry.COLUMN_ITEM_PHONE);
         if (phone == null) {
-            throw new IllegalArgumentException("Item requires a phone number.");
+            throw new IllegalArgumentException("Can I get your number?");
         }
 
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
         long id = db.insert(InventoryEntry.TABLE_NAME, null, values);
 
         if (id == -1) {
-            Log.v(LOG_TAG, "Failed to insert row for " + uri);
+            Log.v(LOG_TAG, "You can't insert a row with " + uri);
             return null;
         }
 
         getContext().getContentResolver().notifyChange(uri, null);
-
         return ContentUris.withAppendedId(uri, id);
     }
 
@@ -143,7 +140,7 @@ public class InventoryProvider extends ContentProvider {
                 selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
                 return updateItem(uri, contentValues, selection, selectionArgs);
             default:
-                throw new IllegalArgumentException("Update is not supported for " + uri);
+                throw new IllegalArgumentException("You can't possibly update with " + uri);
         }
     }
 
@@ -151,7 +148,7 @@ public class InventoryProvider extends ContentProvider {
         if (values.containsKey(InventoryEntry.COLUMN_ITEM_NAME)) {
             String name = values.getAsString(InventoryEntry.COLUMN_ITEM_NAME);
             if (name == null) {
-                throw new IllegalArgumentException("Item requires a name");
+                throw new IllegalArgumentException("I pity the fool that doesn't put an item name!");
             }
         }
 
@@ -160,9 +157,7 @@ public class InventoryProvider extends ContentProvider {
         }
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
-
         int rowsUpdated = database.update(InventoryEntry.TABLE_NAME, values, selection, selectionArgs);
-
         if (rowsUpdated != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
@@ -173,19 +168,19 @@ public class InventoryProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
 
-        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         int rowsDeleted;
 
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case ITEMS:
-                rowsDeleted = database.delete(InventoryEntry.TABLE_NAME, selection, selectionArgs);
+                rowsDeleted = db.delete(InventoryEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case ITEM_ID:
                 selection = InventoryEntry._ID + "=?";
                 selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
-                rowsDeleted = database.delete(InventoryEntry.TABLE_NAME, selection, selectionArgs);
+                rowsDeleted = db.delete(InventoryEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Deletion shall not pass " + uri);

@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements
         values.put(InventoryEntry.COLUMN_ITEM_PHONE, "8882804331");
         values.put(InventoryEntry.COLUMN_ITEM_IMAGE, byteArray);
 
-        Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
+        getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
     }
 
     private void deleteAll() {
