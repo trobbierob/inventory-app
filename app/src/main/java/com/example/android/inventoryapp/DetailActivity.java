@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -75,8 +74,6 @@ public class DetailActivity extends AppCompatActivity implements
 
         Intent intent = getIntent();
         mCurrentStockUri = intent.getData();
-
-        productImageView = (ImageView) findViewById(R.id.product_profile);
 
         if (mCurrentStockUri == null) {
             setTitle("Add an Item");
@@ -443,14 +440,14 @@ public class DetailActivity extends AppCompatActivity implements
             byte[] image = cursor.getBlob(imageColumnIndex);
             itemPhone = cursor.getString(phoneColumnIndex);
 
-            Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+            //Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
 
             mNameEditText.setText(itemName);
             mQuantityEditText.setText(itemQty);
             mPriceEditText.setText(itemPrice);
             mEmailEditText.setText(itemEmail);
             mPhoneEditText.setText(itemPhone);
-            mImageView.setImageBitmap(bitmap);
+            //mImageView.setImageBitmap(bitmap);
         }
     }
 
@@ -461,6 +458,6 @@ public class DetailActivity extends AppCompatActivity implements
         mPriceEditText.setText("");
         mEmailEditText.setText("");
         mPhoneEditText.setText("");
-        mImageView.setImageBitmap(null);
+        //mImageView.setImageBitmap(null);
     }
 }
