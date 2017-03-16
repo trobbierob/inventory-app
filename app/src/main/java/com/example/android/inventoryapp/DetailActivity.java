@@ -215,9 +215,10 @@ public class DetailActivity extends AppCompatActivity implements
         String phoneString = mPhoneEditText.getText().toString().trim();
 
         if (mCurrentStockUri == null &&
-                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) &&
+                TextUtils.isEmpty(nameString) || TextUtils.isEmpty(priceString) ||
                 qty == 0) {
-            //TODO: Make it so that a user must take a photo before item can be saved
+
+            Toasty.info(this, "No item added", Toast.LENGTH_SHORT).show();
             return;
         }
 
