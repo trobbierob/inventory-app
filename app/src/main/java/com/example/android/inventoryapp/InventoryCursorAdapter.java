@@ -48,9 +48,9 @@ public class InventoryCursorAdapter extends CursorAdapter {
         final int itemQty = cursor.getInt(qtyColumnIndex);
         final String itemPrice = cursor.getString(priceColumnIndex);
 
-        nameTextView.setText(itemName);
+        nameTextView.setText("Item: " + itemName);
         qtyTextView.setText("Qty: " + itemQty);
-        priceTextView.setText(itemPrice);
+        priceTextView.setText("Price: $" + itemPrice);
 
         final int position = cursor.getPosition();
         cursor.moveToPosition(position);

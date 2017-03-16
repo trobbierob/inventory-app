@@ -56,6 +56,7 @@ public class DetailActivity extends AppCompatActivity implements
     private int qty = 0;
 
     private String itemPhone = "";
+    private String itemEmail = "";
 
     private boolean mStockHasChanged = false;
 
@@ -138,8 +139,17 @@ public class DetailActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-                if (emailIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(emailIntent);
+                emailIntent.setData(Uri.parse("mailto:"));
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {itemEmail});
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Place Order");
+
+                try {
+                    startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                    finish();
+                    Log.i(LOG_TAG, "Finished sending email...");
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(DetailActivity.this,
+                            "There is no email client installed.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -349,7 +359,7 @@ public class DetailActivity extends AppCompatActivity implements
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Cancel" button, so dismiss the dialog
-                // and continue editing the pet.
+                // and continue editing.
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -362,10 +372,10 @@ public class DetailActivity extends AppCompatActivity implements
     }
 
     /**
-     * Perform the deletion of the pet in the database.
+     * Delete inventory item.
      */
     private void deleteItem() {
-        // Only perform the delete if this is an existing pet.
+        // Only perform the delete if this is an existing item.
         if (mCurrentStockUri != null) {
 
             Log.v(LOG_TAG, "mCurrentStockUri is: " + mCurrentStockUri);
@@ -428,7 +438,7 @@ public class DetailActivity extends AppCompatActivity implements
             String itemName = cursor.getString(nameColumnIndex);
             String itemQty = cursor.getString(qtyColumnIndex);
             String itemPrice = cursor.getString(priceColumnIndex);
-            String itemEmail = cursor.getString(emailColumnIndex);
+            itemEmail = cursor.getString(emailColumnIndex);
             byte[] image = cursor.getBlob(imageColumnIndex);
             itemPhone = cursor.getString(phoneColumnIndex);
 

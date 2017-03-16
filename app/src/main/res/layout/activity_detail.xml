@@ -56,6 +56,8 @@
             android:id="@+id/quantity_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLength="3"
+            android:inputType="number"
             android:hint="0"
             android:textSize="20sp"/>
 
@@ -76,6 +78,7 @@
     <EditText
         android:layout_below="@id/linear_layout"
         android:id="@+id/price_edit_text"
+        android:inputType="numberDecimal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Price of product" />
@@ -90,6 +93,8 @@
     <EditText
         android:layout_below="@id/email_edit_text"
         android:id="@+id/phone_edit_text"
+        android:inputType="phone"
+        android:maxLength="10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Phone of Producer" />
