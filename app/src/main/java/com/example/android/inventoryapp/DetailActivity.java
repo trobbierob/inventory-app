@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -41,7 +42,7 @@ public class DetailActivity extends AppCompatActivity implements
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int EXISTING_ITEM_LOADER = 0;
     private EditText mQuantityEditText;
-    private ImageView productImageView;
+    //private ImageView productImageView;
     private EditText mPriceEditText;
     private EditText mEmailEditText;
     private EditText mPhoneEditText;
@@ -79,9 +80,9 @@ public class DetailActivity extends AppCompatActivity implements
             setTitle("Add an Item");
             invalidateOptionsMenu();
         } else {
-            productImageView.setVisibility(View.GONE);
+            //productImageView.setVisibility(View.GONE);
             setTitle("Edit Item");
-            getLoaderManager().initLoader(EXISTING_ITEM_LOADER, null, DetailActivity.this);
+            getLoaderManager().initLoader(EXISTING_ITEM_LOADER, null, this);
         }
 
         mNameEditText = (EditText) findViewById(R.id.name_edit_text);
@@ -91,6 +92,7 @@ public class DetailActivity extends AppCompatActivity implements
         mPhoneEditText = (EditText) findViewById(R.id.phone_edit_text);
         mCameraButton = (Button) findViewById(R.id.photo_btn);
         mImageView = (ImageView) findViewById(R.id.image_view);
+        Log.v(LOG_TAG, "mImageView is: " + mImageView);
 
         mNameEditText.setOnTouchListener(mTouchListener);
         mPriceEditText.setOnTouchListener(mTouchListener);
@@ -99,6 +101,7 @@ public class DetailActivity extends AppCompatActivity implements
         mPhoneEditText.setOnTouchListener(mTouchListener);
         mCameraButton.setOnTouchListener(mTouchListener);
         mImageView.setOnTouchListener(mTouchListener);
+
 
         TextView plusIcon = (TextView) findViewById(R.id.plus);
         plusIcon.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +140,7 @@ public class DetailActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
                 emailIntent.setData(Uri.parse("mailto:"));
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {itemEmail});
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{itemEmail});
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Place Order");
 
                 try {
@@ -194,6 +197,9 @@ public class DetailActivity extends AppCompatActivity implements
             imageBitmap = (Bitmap) extras.get("data");
             getBytes(imageBitmap);
             mImageView.setImageBitmap(imageBitmap);
+            Log.v(LOG_TAG, "onActivityResult");
+            Log.v(LOG_TAG, "mImageView is: " + mImageView);
+            Log.v(LOG_TAG, "imageBitmap is: " + imageBitmap);
         }
     }
 
@@ -201,6 +207,7 @@ public class DetailActivity extends AppCompatActivity implements
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
         byteArray = stream.toByteArray();
+        Log.v(LOG_TAG, "byteArray is: " + byteArray);
     }
 
     private void saveItem() {
@@ -211,13 +218,18 @@ public class DetailActivity extends AppCompatActivity implements
         String emailString = mEmailEditText.getText().toString().trim();
         String phoneString = mPhoneEditText.getText().toString().trim();
 
+
         if (mCurrentStockUri == null &&
                 TextUtils.isEmpty(nameString) || TextUtils.isEmpty(priceString) ||
-                qty == 0) {
+                TextUtils.isEmpty(qtyString) || TextUtils.isEmpty(emailString) ||
+                TextUtils.isEmpty(phoneString)) {
 
             Toasty.info(this, "No item added", Toast.LENGTH_SHORT).show();
+
+            Log.v(LOG_TAG, "Look at me it failed");
             return;
         }
+
 
         ContentValues values = new ContentValues();
         values.put(InventoryEntry.COLUMN_ITEM_NAME, nameString);
@@ -227,15 +239,18 @@ public class DetailActivity extends AppCompatActivity implements
         values.put(InventoryEntry.COLUMN_ITEM_PHONE, phoneString);
         values.put(InventoryEntry.COLUMN_ITEM_IMAGE, byteArray);
 
+        Log.v(LOG_TAG, "mCurrentStockURI is: " + mCurrentStockUri);
+
         if (mCurrentStockUri == null) {
             Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
 
             // Show a toast message depending on whether or not the insertion was successful.
-            if (newUri == null) {
+            if (newUri == null || TextUtils.isEmpty(nameString)) {
                 Toasty.error(this, "Item Not Saved", Toast.LENGTH_SHORT).show();
             } else {
                 Toasty.success(this, "Item Saved", Toast.LENGTH_SHORT).show();
             }
+
         } else {
             int rowsAffected = getContentResolver().update(mCurrentStockUri, values, null, null);
 
@@ -440,24 +455,32 @@ public class DetailActivity extends AppCompatActivity implements
             byte[] image = cursor.getBlob(imageColumnIndex);
             itemPhone = cursor.getString(phoneColumnIndex);
 
-            //Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+
+            if (image == null) {
+
+            } else {
+
+                Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+                mImageView.setImageBitmap(bitmap);
+            }
+
 
             mNameEditText.setText(itemName);
             mQuantityEditText.setText(itemQty);
             mPriceEditText.setText(itemPrice);
             mEmailEditText.setText(itemEmail);
             mPhoneEditText.setText(itemPhone);
-            //mImageView.setImageBitmap(bitmap);
+
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mNameEditText.setText("");
+        mNameEditText.setText("bread");
         mQuantityEditText.setText("");
         mPriceEditText.setText("");
         mEmailEditText.setText("");
         mPhoneEditText.setText("");
-        //mImageView.setImageBitmap(null);
+        mImageView.setImageBitmap(null);
     }
 }
