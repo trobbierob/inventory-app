@@ -93,26 +93,31 @@ public class InventoryProvider extends ContentProvider {
     private Uri insertItem(Uri uri, ContentValues values) {
 
         String name = values.getAsString(InventoryEntry.COLUMN_ITEM_NAME);
+        Log.v(LOG_TAG, "name is " + name);
         if (name == null) {
             throw new IllegalArgumentException("Item requires a name.");
         }
 
         String price = values.getAsString(InventoryEntry.COLUMN_ITEM_PRICE);
+        Log.v(LOG_TAG, "price is " + price);
         if (price == null) {
             throw new IllegalArgumentException("Item requires a price.");
         }
 
         Integer quantity = values.getAsInteger(InventoryEntry.COLUMN_ITEM_QTY);
+        Log.v(LOG_TAG, "quantity is " + quantity);
         if (quantity == null || quantity < 0) {
             throw new IllegalArgumentException("Keep it positive #Quantity");
         }
 
         String email = values.getAsString(InventoryEntry.COLUMN_ITEM_EMAIL);
+        Log.v(LOG_TAG, "email is " + email);
         if (email == null) {
             throw new IllegalArgumentException("Can I get your email?");
         }
 
         String phone = values.getAsString(InventoryEntry.COLUMN_ITEM_PHONE);
+        Log.v(LOG_TAG, "phone is " + phone);
         if (phone == null) {
             throw new IllegalArgumentException("Can I get your number?");
         }
@@ -147,6 +152,7 @@ public class InventoryProvider extends ContentProvider {
     private int updateItem(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         if (values.containsKey(InventoryEntry.COLUMN_ITEM_NAME)) {
             String name = values.getAsString(InventoryEntry.COLUMN_ITEM_NAME);
+            Log.v(LOG_TAG, "name is " + name);
             if (name == null) {
                 throw new IllegalArgumentException("I pity the fool that doesn't put an item name!");
             }
