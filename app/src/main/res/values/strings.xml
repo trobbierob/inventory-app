@@ -5,4 +5,18 @@
     <string name="delete_dialog_msg">Delete this item?</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="mailto">mailto:</string>
+    <string name="place_order">Place Order</string>
+    <string name="send_email">Send Email</string>
+    <string name="missing_email_client">There is no email client installed.</string>
+    <string name="edit_item">Edit Item</string>
+    <string name="add_item">Add an Item</string>
+    <string name="not_more_than_100">Quantity Cannot Be More Than 100</string>
+    <string name="not_less_than_0">Quantity Cannot Be Less Than 0</string>
+    <string name="telephone_abbr">tel:</string>
+    <string name="no_item_added">No item added</string>
+    <string name="item_not_saved">Item Not Saved</string>
+    <string name="item_saved">Item Saved</string>
+    <string name="item_not_updated">Item Not Updated</string>
+    <string name="item_updated">Item Updated</string>
 </resources>

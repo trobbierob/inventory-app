@@ -16,7 +16,6 @@ import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -42,7 +41,6 @@ public class DetailActivity extends AppCompatActivity implements
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int EXISTING_ITEM_LOADER = 0;
     private EditText mQuantityEditText;
-    //private ImageView productImageView;
     private EditText mPriceEditText;
     private EditText mEmailEditText;
     private EditText mPhoneEditText;
@@ -77,11 +75,10 @@ public class DetailActivity extends AppCompatActivity implements
         mCurrentStockUri = intent.getData();
 
         if (mCurrentStockUri == null) {
-            setTitle("Add an Item");
+            setTitle(getString(R.string.add_item));
             invalidateOptionsMenu();
         } else {
-            //productImageView.setVisibility(View.GONE);
-            setTitle("Edit Item");
+            setTitle(getString(R.string.edit_item));
             getLoaderManager().initLoader(EXISTING_ITEM_LOADER, null, this);
         }
 
@@ -92,7 +89,6 @@ public class DetailActivity extends AppCompatActivity implements
         mPhoneEditText = (EditText) findViewById(R.id.phone_edit_text);
         mCameraButton = (Button) findViewById(R.id.photo_btn);
         mImageView = (ImageView) findViewById(R.id.image_view);
-        Log.v(LOG_TAG, "mImageView is: " + mImageView);
 
         mNameEditText.setOnTouchListener(mTouchListener);
         mPriceEditText.setOnTouchListener(mTouchListener);
@@ -108,7 +104,7 @@ public class DetailActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 if (qty > 100) {
-                    Toasty.error(DetailActivity.this, "Quantity Cannot Be More Than 100",
+                    Toasty.error(DetailActivity.this, getString(R.string.not_more_than_100),
                             Toast.LENGTH_SHORT).show();
                 } else {
                     qty = qty + 1;
@@ -122,7 +118,7 @@ public class DetailActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 if (qty <= 0) {
-                    Toasty.error(DetailActivity.this, "Quantity Cannot Be Less Than 0",
+                    Toasty.error(DetailActivity.this, getString(R.string.not_less_than_0),
                             Toast.LENGTH_SHORT).show();
                 } else {
                     qty = qty - 1;
@@ -139,17 +135,16 @@ public class DetailActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-                emailIntent.setData(Uri.parse("mailto:"));
+                emailIntent.setData(Uri.parse(getString(R.string.mailto)));
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{itemEmail});
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Place Order");
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.place_order));
 
                 try {
-                    startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                    startActivity(Intent.createChooser(emailIntent, getString(R.string.send_email)));
                     finish();
-                    Log.i(LOG_TAG, "Finished sending email...");
                 } catch (android.content.ActivityNotFoundException ex) {
                     Toast.makeText(DetailActivity.this,
-                            "There is no email client installed.", Toast.LENGTH_SHORT).show();
+                            R.string.missing_email_client, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -161,7 +156,7 @@ public class DetailActivity extends AppCompatActivity implements
         call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri number = Uri.parse("tel:" + itemPhone);
+                Uri number = Uri.parse(getString(R.string.telephone_abbr) + itemPhone);
                 Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
                 if (callIntent.resolveActivity(getPackageManager()) != null) {
                     startActivity(callIntent);
@@ -169,6 +164,10 @@ public class DetailActivity extends AppCompatActivity implements
             }
         });
 
+        /**
+         * Creates a fab that will display two fabs to contact the manufacturer
+         * by email or by phone number
+         */
         final FloatingActionsMenu multiContact = (FloatingActionsMenu) findViewById(R.id.multiple_contact);
         multiContact.addButton(email);
         multiContact.addButton(call);
@@ -179,7 +178,6 @@ public class DetailActivity extends AppCompatActivity implements
                 takePhoto();
             }
         });
-
         displayQuantity();
     }
 
@@ -197,9 +195,6 @@ public class DetailActivity extends AppCompatActivity implements
             imageBitmap = (Bitmap) extras.get("data");
             getBytes(imageBitmap);
             mImageView.setImageBitmap(imageBitmap);
-            Log.v(LOG_TAG, "onActivityResult");
-            Log.v(LOG_TAG, "mImageView is: " + mImageView);
-            Log.v(LOG_TAG, "imageBitmap is: " + imageBitmap);
         }
     }
 
@@ -207,7 +202,6 @@ public class DetailActivity extends AppCompatActivity implements
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
         byteArray = stream.toByteArray();
-        Log.v(LOG_TAG, "byteArray is: " + byteArray);
     }
 
     private void saveItem() {
@@ -218,18 +212,14 @@ public class DetailActivity extends AppCompatActivity implements
         String emailString = mEmailEditText.getText().toString().trim();
         String phoneString = mPhoneEditText.getText().toString().trim();
 
-
         if (mCurrentStockUri == null &&
                 TextUtils.isEmpty(nameString) || TextUtils.isEmpty(priceString) ||
                 TextUtils.isEmpty(qtyString) || TextUtils.isEmpty(emailString) ||
                 TextUtils.isEmpty(phoneString)) {
 
-            Toasty.info(this, "No item added", Toast.LENGTH_SHORT).show();
-
-            Log.v(LOG_TAG, "Look at me it failed");
+            Toasty.info(this, getString(R.string.no_item_added), Toast.LENGTH_SHORT).show();
             return;
         }
-
 
         ContentValues values = new ContentValues();
         values.put(InventoryEntry.COLUMN_ITEM_NAME, nameString);
@@ -239,25 +229,23 @@ public class DetailActivity extends AppCompatActivity implements
         values.put(InventoryEntry.COLUMN_ITEM_PHONE, phoneString);
         values.put(InventoryEntry.COLUMN_ITEM_IMAGE, byteArray);
 
-        Log.v(LOG_TAG, "mCurrentStockURI is: " + mCurrentStockUri);
-
         if (mCurrentStockUri == null) {
             Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
 
             // Show a toast message depending on whether or not the insertion was successful.
             if (newUri == null || TextUtils.isEmpty(nameString)) {
-                Toasty.error(this, "Item Not Saved", Toast.LENGTH_SHORT).show();
+                Toasty.error(this, getString(R.string.item_not_saved), Toast.LENGTH_SHORT).show();
             } else {
-                Toasty.success(this, "Item Saved", Toast.LENGTH_SHORT).show();
+                Toasty.success(this, getString(R.string.item_saved), Toast.LENGTH_SHORT).show();
             }
 
         } else {
             int rowsAffected = getContentResolver().update(mCurrentStockUri, values, null, null);
 
             if (rowsAffected == 0) {
-                Toasty.error(this, "Item Not Updated", Toast.LENGTH_SHORT).show();
+                Toasty.error(this, getString(R.string.item_not_updated), Toast.LENGTH_SHORT).show();
             } else {
-                Toasty.success(this, "Item Updated", Toast.LENGTH_SHORT).show();
+                Toasty.success(this, getString(R.string.item_updated), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -285,7 +273,6 @@ public class DetailActivity extends AppCompatActivity implements
                 saveItem();
                 finish();
                 return true;
-
             case R.id.action_delete:
                 showDeleteConfirmationDialog();
                 return true;
@@ -391,12 +378,7 @@ public class DetailActivity extends AppCompatActivity implements
         // Only perform the delete if this is an existing item.
         if (mCurrentStockUri != null) {
 
-            Log.v(LOG_TAG, "mCurrentStockUri is: " + mCurrentStockUri);
-
             int rowsDeleted = getContentResolver().delete(mCurrentStockUri, null, null);
-
-            Log.v(LOG_TAG, "rowsDeleted is: " + rowsDeleted);
-
             // Show a toast message depending on whether or not the delete was successful.
             if (rowsDeleted == 0) {
                 // If no rows were deleted, then there was an error with the delete.
@@ -455,28 +437,24 @@ public class DetailActivity extends AppCompatActivity implements
             byte[] image = cursor.getBlob(imageColumnIndex);
             itemPhone = cursor.getString(phoneColumnIndex);
 
-
             if (image == null) {
 
             } else {
-
                 Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
                 mImageView.setImageBitmap(bitmap);
             }
-
 
             mNameEditText.setText(itemName);
             mQuantityEditText.setText(itemQty);
             mPriceEditText.setText(itemPrice);
             mEmailEditText.setText(itemEmail);
             mPhoneEditText.setText(itemPhone);
-
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mNameEditText.setText("bread");
+        mNameEditText.setText("");
         mQuantityEditText.setText("");
         mPriceEditText.setText("");
         mEmailEditText.setText("");
